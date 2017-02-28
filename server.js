@@ -16,7 +16,7 @@ app.get('/cards/:gathererID', function (req, res) {
 app.get('/cards/:gathererID/image', function (req, res) {
     mtg.card.find(req.params['gathererID'])
     .then(result => {
-        res.send('<img src="' + result.card.imageUrl + '">')
+        res.send('<img src="' + result.card.imageUrl.replace('&amp;','&') + '">')
     })
 })
 
