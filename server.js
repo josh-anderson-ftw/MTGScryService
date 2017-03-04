@@ -2,6 +2,9 @@ const mtg = require('mtgsdk')
 var express = require('express')
 var app = express()
 
+//Setup static route
+app.use('/StreamView', express.static('public'))
+
 app.get('/', function (req, res) {
     res.send('Having trouble? Check the readme @ https://github.com/nosrednAhsoJ/MTGScryService.')
 })
