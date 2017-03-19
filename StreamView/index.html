@@ -1,4 +1,38 @@
+<!doctype html>
 <html>
-<body bgcolor="#009933">
-</body>
+  <head>
+    <title>MTGScryService Client</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+    </style>
+  </head>
+  <body bgcolor="#009933">
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $('form').submit(function(){
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+        socket.on('send_picture', function (data){
+            var oldImg = document.getElementById('imgid');
+            oldImg.src = data;
+            oldImg.width = 172;
+            oldImg.height = 241;
+            $("#imgid").delay(15000).fadeOut("slow");
+        });
+      });
+    </script>
+    <div>
+        <img id="imgid" src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=423723&type=card" width="0" height="0" alt="" />
+    </div>
+  </body>
 </html>

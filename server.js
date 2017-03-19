@@ -1,26 +1,27 @@
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var port = process.env.PORT || 3000;
 const mtg = require('mtgsdk')
-var express = require('express')
-var app = express()
 
 //Setup static route
-app.use('/StreamView', express.static('StreamView'))
+app.use('/StreamView', function(req, res){
+    res.sendFile(__dirname + '/StreamView/index.html');
+});
 
 app.get('/', function (req, res) {
     res.send('Having trouble? Check the readme @ https://github.com/nosrednAhsoJ/MTGScryService.')
 })
 
-app.get('/cards/:gathererID', function (req, res) {
-    mtg.card.find(req.params['gathererID'])
+app.get('/cards/:cardID', function(req, res){
+    mtg.card.find(req.params['cardID'])
     .then(result => {
-        res.send(result.card)
+        cardHTML = result.card.imageUrl.replace('&amp;','&');
+        io.emit('send_picture', cardHTML);
+        res.send(cardHTML);
     })
-})
+});
 
-app.get('/cards/:gathererID/image', function (req, res) {
-    mtg.card.find(req.params['gathererID'])
-    .then(result => {
-        res.send('<img src="' + result.card.imageUrl.replace('&amp;','&') + '">')
-    })
-})
-
-app.listen(process.env.PORT || 3000)
+http.listen(port, function(){
+  console.log('listening on *:' + port);
+});

@@ -5,7 +5,9 @@
   "main": "server.js",
   "dependencies": {
     "express": "^4.14.1",
-    "mtgsdk": "^0.1.1"
+    "express-ws": "^3.0.0",
+    "mtgsdk": "^0.1.1",
+    "socket.io": "^1.7.3"
   },
   "devDependencies": {},
   "scripts": {
